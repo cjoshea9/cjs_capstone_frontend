@@ -3,6 +3,14 @@ import './App.css';
 import Navbar from "./components/Navbar"
 
 function App() {
+
+  async function getRequest() {
+    const res = await fetch('https://cjsback.herokuapp.com/')
+    const data = await res.json()
+    console.log(data)
+  }
+  
+  getRequest()
   return (
     <Navbar/>
     // <div className="App">
