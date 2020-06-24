@@ -25,7 +25,6 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then((data) => {
-        console.log(data)
         this.setState({
           output: data['response']
         })
@@ -36,7 +35,6 @@ class App extends React.Component {
     this.setState({
       input: input.target.value
     })
-    console.log(this.state.input)
   }
 
   render() {
