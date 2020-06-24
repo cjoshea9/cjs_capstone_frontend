@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 import Navbar from "./components/Navbar"
+import TextField from '@material-ui/core/TextField';
 
 function App() {
-
   async function getRequest() {
     const res = await fetch('https://cjsback.herokuapp.com/')
     const data = await res.json()
@@ -12,23 +12,24 @@ function App() {
   
   getRequest()
   return (
-    <Navbar/>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+    <div>
+      <Navbar/>
+      <div className="textfields">
+        <TextField
+          className="filled-textarea"
+          label="Enter Text"
+          multiline
+          variant="filled"
+        />
+        <TextField
+          className="filled-textarea"
+          label="Translate"
+          multiline
+          variant="filled"
+        />
+      </div>
+    </div>
+
   );
 }
 
