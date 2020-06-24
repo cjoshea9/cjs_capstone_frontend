@@ -9,20 +9,35 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      value: ""
+      input: "",
+      output: ""
     }
-    this.getRequest = this.getRequest.bind(this)
+    this.postRequest = this.postRequest.bind(this)
+    this.updateInput = this.updateInput.bind(this)
   }
   
-  getRequest() {
-    fetch('https://cjsback.herokuapp.com/')
+  postRequest() {
+    fetch('https://cjsback.herokuapp.com/', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+      body: "name="+ this.state.input
+    })
       .then(res => res.json())
       .then((data) => {
         console.log(data)
         this.setState({
-          value: data['hello']
+          output: data['hello']
         })
       })
+  }
+
+  updateInput(input) {
+    this.setState({
+      input: input.target.value
+    })
+    console.log(this.state.input)
   }
 
   render() {
@@ -35,15 +50,20 @@ class App extends React.Component {
             label="Enter Text"
             multiline
             variant="filled"
+            onChange={this.updateInput}
           />
           <TextField
             className="filled-textarea"
             label="Translate"
             multiline
             variant="filled"
-            value={this.state.value}
+            value={this.state.output}
           />
-          <Button variant="contained" color="primary" onClick={this.getRequest}>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={this.postRequest}
+            >
             Translate
           </Button>
         </div>
