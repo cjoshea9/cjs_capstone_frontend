@@ -3,7 +3,6 @@ import './App.css';
 import Navbar from "./components/Navbar"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { render } from '@testing-library/react';
 
 class App extends React.Component {
   constructor(props){
@@ -22,13 +21,13 @@ class App extends React.Component {
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded',
       }),
-      body: "name="+ this.state.input
+      body: "input="+ this.state.input
     })
       .then(res => res.json())
       .then((data) => {
         console.log(data)
         this.setState({
-          output: data['hello']
+          output: data['response']
         })
       })
   }
