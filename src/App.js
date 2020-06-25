@@ -22,12 +22,17 @@ class App extends React.Component {
   }
   
   postRequest() {
+    const params = new URLSearchParams({
+      input: this.state.input,
+      in_lang: this.state.inputLanguage,
+      out_lang: this.state.outputLangauge
+    })
     fetch('https://cjsback.herokuapp.com/', {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded',
       }),
-      body: "input="+ this.state.input + "&in_lang=" + this.state.inputLanguage + "&out_lang" + this.state.outputLangauge
+      body: params.toString()
     })
       .then(res => res.json())
       .then((data) => {
@@ -62,7 +67,7 @@ class App extends React.Component {
         
        <div class="selectlanguage">
        <FormControl>
-        <InputLabel id="demo-controlled-open-select-label">Input</InputLabel>
+        <InputLabel>Input</InputLabel>
        <Select
           value={this.inputLanguage}
           onChange={this.updateInputLanguage}
@@ -77,7 +82,7 @@ class App extends React.Component {
         
        
         <FormControl>
-        <InputLabel id="demo-controlled-open-select-label">Output</InputLabel>
+        <InputLabel>Output</InputLabel>
         <Select
           value={this.outputLangauge}
           onChange={this.updateOutputLanguage}
