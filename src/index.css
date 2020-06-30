@@ -23,7 +23,6 @@ code {
   justify-content: space-evenly;
 }
 
-.links {
-  display: flex;
-  justify-content: center;
+.gsc-input, .gsc-search-button, .gsc-clear-button {
+  display: none;
 }

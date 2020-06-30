@@ -30,9 +30,15 @@ class App extends React.Component {
       out_lang: this.state.outputLangauge
     })
 
-    // sends get request with user query
-    const query = this.state.input + " in " + this.state.outputLangauge;
-    this.getRequest(query)
+    // submit user query to search bar
+    let query = this.state.input + " in "
+    if (this.state.outputLangauge == "js") {
+      query += "javascript";
+    }
+    if (this.state.outputLangauge == "py") {
+      query += "python";
+    }
+    this.querySearch(query);
 
     fetch('https://cjsback.herokuapp.com/', {
       method: 'POST',
@@ -75,27 +81,11 @@ class App extends React.Component {
     document.body.appendChild(script);
   }
 
-  // Get request using rest API - returns all data (links, titles, summary etc)
-  getRequest(query) {
-    console.log(query);
-    fetch('https://www.googleapis.com/customsearch/v1?key=AIzaSyAU-3jbW41Be4Vj_1fI4kr6yf3hsOpCAbw&cx=013104617978576650762:hrpvx9uejrs&q=' + query, {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded',
-      })
-    }).then(res => res.json()).then((data) => {
-      for (const currElm of data.items) {
-        //html formatted has tags in it
-        const url = currElm.link;
-        const title = currElm.htmlTitle;
-        // div to hold individual result
-        const elm = document.createElement("a");
-        elm.classList.add("links");
-        elm.setAttribute("href", url);
-        elm.innerHTML = title;
-        document.body.appendChild(elm)
-      }
-    })
+  querySearch(query) {
+    document.getElementById("gsc-i-id1").value = query;
+    for (const button of document.getElementsByClassName("gsc-search-button gsc-search-button-v2")) {
+      button.click();
+    }
   }
   
   render() {
@@ -157,9 +147,8 @@ class App extends React.Component {
             Translate
           </Button>
         </div>
-        
-
-        <div class="gcse-search"></div>
+      
+        <div class="gcse-search" id="bar"></div>
         
       </div>
     );
