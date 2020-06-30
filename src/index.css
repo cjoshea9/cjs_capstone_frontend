@@ -23,3 +23,6 @@ code {
   justify-content: space-evenly;
 }
 
+.gsc-input, .gsc-search-button, .gsc-clear-button {
+  display: none;
+}

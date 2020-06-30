@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
+
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -22,11 +23,23 @@ class App extends React.Component {
   }
   
   postRequest() {
+    // TODO: add error checking before post and get request
     const params = new URLSearchParams({
       input: this.state.input,
       in_lang: this.state.inputLanguage,
       out_lang: this.state.outputLangauge
     })
+
+    // submit user query to search bar
+    let query = this.state.input + " in "
+    if (this.state.outputLangauge === "js") {
+      query += "javascript";
+    }
+    if (this.state.outputLangauge === "py") {
+      query += "python";
+    }
+    this.querySearch(query);
+
     fetch('https://cjsback.herokuapp.com/', {
       method: 'POST',
       headers: new Headers({
@@ -60,11 +73,24 @@ class App extends React.Component {
     });
   }
 
+  // Adds script for search bar
+  componentDidMount () {
+    const script = document.createElement("script");
+    script.src = "https://cse.google.com/cse.js?cx=013104617978576650762:hrpvx9uejrs";
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  querySearch(query) {
+    document.getElementById("gsc-i-id1").value = query;
+    const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
+    buttons[0].click();
+  }
+  
   render() {
     return (
       <div>
         <Navbar/>
-        
        <div class="selectlanguage">
        <FormControl>
         <InputLabel>Input</InputLabel>
@@ -120,6 +146,9 @@ class App extends React.Component {
             Translate
           </Button>
         </div>
+      
+        <div class="gcse-search"></div>
+        
       </div>
     );
   }
