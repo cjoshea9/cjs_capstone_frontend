@@ -99,9 +99,6 @@ class App extends React.Component {
           defaultValue={"js"}
           onChange={this.updateInputLanguage}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           <MenuItem value={"js"}>JavaScript</MenuItem>
           <MenuItem value={"py"}>Python</MenuItem>
         </Select>
@@ -115,9 +112,6 @@ class App extends React.Component {
           defaultValue={"py"}
           onChange={this.updateOutputLanguage}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           <MenuItem value={"js"}>JavaScript</MenuItem>
           <MenuItem value={"py"}>Python</MenuItem>
         </Select>
