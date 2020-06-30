@@ -32,10 +32,10 @@ class App extends React.Component {
 
     // submit user query to search bar
     let query = this.state.input + " in "
-    if (this.state.outputLangauge == "js") {
+    if (this.state.outputLangauge === "js") {
       query += "javascript";
     }
-    if (this.state.outputLangauge == "py") {
+    if (this.state.outputLangauge === "py") {
       query += "python";
     }
     this.querySearch(query);
@@ -83,9 +83,8 @@ class App extends React.Component {
 
   querySearch(query) {
     document.getElementById("gsc-i-id1").value = query;
-    for (const button of document.getElementsByClassName("gsc-search-button gsc-search-button-v2")) {
-      button.click();
-    }
+    const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
+    buttons[0].click();
   }
   
   render() {
@@ -148,7 +147,7 @@ class App extends React.Component {
           </Button>
         </div>
       
-        <div class="gcse-search" id="bar"></div>
+        <div class="gcse-search"></div>
         
       </div>
     );
