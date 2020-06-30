@@ -15,8 +15,8 @@ class App extends React.Component {
     this.state = {
       input: "",
       output: "",
-      inputLanguage: "",
-      outputLangauge: ""
+      inputLanguage: "js",
+      outputLangauge: "py"
     }
     this.postRequest = this.postRequest.bind(this)
     this.updateInput = this.updateInput.bind(this)
@@ -96,6 +96,7 @@ class App extends React.Component {
         <InputLabel>Input</InputLabel>
        <Select
           value={this.inputLanguage}
+          defaultValue={"js"}
           onChange={this.updateInputLanguage}
         >
           <MenuItem value="">
@@ -111,6 +112,7 @@ class App extends React.Component {
         <InputLabel>Output</InputLabel>
         <Select
           value={this.outputLangauge}
+          defaultValue={"py"}
           onChange={this.updateOutputLanguage}
         >
           <MenuItem value="">
