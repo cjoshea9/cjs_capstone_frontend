@@ -59,6 +59,21 @@ class App extends React.Component {
     this.setState({
       input: input.target.value
     })
+    this.allowTabs()
+  }
+
+  allowTabs() {
+    const textbox = document.getElementById("input-text-area")
+    textbox.onkeydown = function(key) {
+      if (key.code === "Tab") {
+        const val = this.value
+        const start = this.selectionStart
+        const end = this.selectionEnd
+        this.value = val.substring(0, start) + '\t' + val.substring(end)
+        this.selectionStart = this.selectionEnd = start + 1
+        return false
+      }
+    }
   }
 
   updateInputLanguage = (input) => {
@@ -122,6 +137,7 @@ class App extends React.Component {
         <div className="textfields">
           <TextField
             className="filled-textarea"
+            id="input-text-area"
             label="Enter Text"
             multiline
             variant="filled"
@@ -144,7 +160,6 @@ class App extends React.Component {
         </div>
       
         <div class="gcse-search"></div>
-        
       </div>
     );
   }
