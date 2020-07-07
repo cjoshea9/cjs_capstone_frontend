@@ -12,14 +12,14 @@ import FormControl from '@material-ui/core/FormControl';
 class App extends React.Component {
   constructor(props){
     super(props);
+    this.timeout = 0
     this.state = {
       input: "",
       output: "",
       inputLanguage: "js",
-      outputLangauge: "py"
+      outputLangauge: "py",
     }
     this.postRequest = this.postRequest.bind(this)
-    this.updateInput = this.updateInput.bind(this)
   }
   
   postRequest() {
@@ -53,13 +53,6 @@ class App extends React.Component {
           output: data['response']
         })
       })
-  }
-
-  updateInput(input) {
-    this.setState({
-      input: input.target.value
-    })
-    this.allowTabs()
   }
 
   allowTabs() {
@@ -101,6 +94,21 @@ class App extends React.Component {
     const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
     buttons[0].click();
   }
+
+  autoTranslate(input) {
+    this.allowTabs()
+    
+    // updates state with what user typed
+    this.setState({
+      input: input.target.value
+    })
+
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      // translates if 300 ms passes after last keystroke
+      this.postRequest()
+    }, 300);
+  }
   
   render() {
     return (
@@ -141,7 +149,7 @@ class App extends React.Component {
             label="Enter Text"
             multiline
             variant="filled"
-            onChange={this.updateInput}
+            onChange={input => this.autoTranslate(input)}
           />
           <TextField
             className="filled-textarea"
