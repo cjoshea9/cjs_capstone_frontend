@@ -20,6 +20,7 @@ class App extends React.Component {
       outputLangauge: "py",
     }
     this.postRequest = this.postRequest.bind(this)
+    this.autoTranslate = this.autoTranslate.bind(this)
   }
   
   postRequest() {
@@ -103,11 +104,11 @@ class App extends React.Component {
       input: input.target.value
     })
 
-    if (this.timeout) clearTimeout(this.timeout);
+    clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      // translates if 300 ms passes after last keystroke
+      // translates if 500 ms passes after last keystroke
       this.postRequest()
-    }, 300);
+    }, 500);
   }
   
   render() {
@@ -148,13 +149,15 @@ class App extends React.Component {
             id="input-text-area"
             label="Enter Text"
             multiline
+            rows = "5"
             variant="filled"
-            onChange={input => this.autoTranslate(input)}
+            onChange={this.autoTranslate}
           />
           <TextField
             className="filled-textarea"
             label="Translate"
             multiline
+            rows = "5"
             variant="filled"
             value={this.state.output}
           />
