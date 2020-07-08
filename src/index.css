@@ -26,3 +26,7 @@ code {
 .gsc-input, .gsc-search-button, .gsc-clear-button {
   display: none;
 }
+
+.filled-textarea {
+  width: 40%;
+}
