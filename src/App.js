@@ -152,6 +152,11 @@ class App extends React.Component {
             rows = "5"
             variant="filled"
             onChange={this.autoTranslate}
+            InputProps={{
+              style: {
+                  fontFamily: "monospace"
+              }
+            }}
           />
           <TextField
             className="filled-textarea"
@@ -160,6 +165,11 @@ class App extends React.Component {
             rows = "5"
             variant="filled"
             value={this.state.output}
+            InputProps={{
+              style: {
+                  fontFamily: "monospace"
+              }
+            }}
           />
           <Button 
             variant="contained" 
