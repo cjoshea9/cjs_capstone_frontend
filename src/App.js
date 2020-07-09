@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-// import useScript from './hooks/useScript.js';
+import LanguageBar from './components/LanguageBar';
+import TranslateBoxes from './components/TranslateBoxes';
+import Navbar from './components/Navbar';
+
 
 const useStyles = makeStyles(theme => ({
   heroContent: {
@@ -129,71 +124,23 @@ export default function App() {
         
         <React.Fragment>
             <CssBaseline />
-            <AppBar position="relative">
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        CodeTranslate
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <Navbar/>
             <main>
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="md">
-                            <AppBar position="static" className={classes.languageBar}>
-                                <Grid container className={classes.basicGrid} spacing={2}>
-                                    <Grid item xs={6}>
-                                        <Tabs
-                                            value={inputLanguage}
-                                            onChange={handleInputLanguageChange}
-                                            indicatorColor="primary"
-                                            textColor="primary"
-                                            variant="fullWidth"
-                                        >
-                                            <Tab value= "js" label="JavaScript" />
-                                            <Tab value="py" label="Python" />
-                                        </Tabs>
-                                    </Grid>
-                                    {/* TODO: break up both sets of tabx */}
-                                    <Grid item xs={6}>
-                                        <Tabs
-                                            value={outputLanguage}
-                                            onChange={handleOutputLanguageChange}
-                                            indicatorColor="primary"
-                                            textColor="primary"
-                                            variant="fullWidth"
-                                        >
-                                            <Tab value= "js" label="JavaScript" />
-                                            <Tab value="py" label="Python" />
-                                        </Tabs>
-                                    </Grid>
-                                </Grid>
-                            </AppBar>
-                            <Paper className={classes.paper}>
-                                <Grid container className={classes.basicGrid} spacing={1}>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                        id="input-text-area"
-                                        label="Input Code"
-                                        multiline
-                                        fullWidth
-                                        onChange={handleInputChange}
-                                        InputProps={{ disableUnderline: true }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                        id="standard-multiline-static"
-                                        label="Translation"
-                                        multiline
-                                        fullWidth
-                                        InputProps={{ disableUnderline: true }}
-                                        value={output}
-                                        disabled
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Paper>
+                            <LanguageBar 
+                              inputLanguage={inputLanguage} 
+                              outputLanguage={outputLanguage} 
+                              handleInputLanguageChange= {handleInputLanguageChange} 
+                              handleOutputLanguageChange= {handleOutputLanguageChange} 
+                              classes={classes}
+                            />
+                            <TranslateBoxes
+                              handleInputChange={handleInputChange}
+                              output={output}
+                              classes={classes}
+                            />
                     </Container>
                 </div>
             </main>
