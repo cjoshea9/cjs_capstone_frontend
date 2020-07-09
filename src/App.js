@@ -82,11 +82,11 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(value){
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){
         const params = new URLSearchParams({
-            input: value,
-            in_lang: inputLanguage,
-            out_lang: outputLanguage
+            input: inputValue,
+            in_lang: inputLanguageValue,
+            out_lang: outputLanguageValue
         })
 
         const requestOptions = {
@@ -104,10 +104,12 @@ export default function App() {
 
     const handleInputLanguageChange = (event, value) => {
         setInputLanguage(value)
+        postRequest(input, value, outputLanguage)
     } 
 
     const handleOutputLanguageChange = (event, value) => {
         setOutputLanguage(value)
+        postRequest(input, inputLanguage, value)
     } 
 
     const handleInputChange = (event) => {
@@ -117,7 +119,7 @@ export default function App() {
 
         clearTimeout(timer)
         setTimer(setTimeout(() => {
-            postRequest(value)
+            postRequest(value, inputLanguage, outputLanguage)
         }, 500))
       }
 
