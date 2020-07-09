@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import useScript from './hooks/useScript.js';
+// import useScript from './hooks/useScript.js';
 
 const useStyles = makeStyles(theme => ({
   heroContent: {
@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
   },
   basicGrid: {
     flexGrow: 1,
+  },
+  languageBar: {
+      background: "white"
   },
   paper: {
     padding: theme.spacing(2),
@@ -35,6 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+// TODO: Use refs instead of this method
 function allowTabs() {
     const textbox = document.getElementById("input-text-area")
     textbox.onkeydown = function(key) {
@@ -52,9 +56,6 @@ function allowTabs() {
 export default function App() {
     const classes = useStyles();
 
-    // call google search bar
-    useScript('https://cse.google.com/cse.js?cx=013104617978576650762:hrpvx9uejrs');
-    
     // set state
     const [timer, setTimer] = useState(null);
     const [input, setInput] = useState("");
@@ -70,22 +71,32 @@ export default function App() {
 
     // deals with the fact that setting state is asynchronous
     useEffect(() => {
-        autoTranslate(input)
-    }, [input])
+        const script = document.createElement('script');
 
-    async function postRequest(){
+        script.src = "https://cse.google.com/cse.js?cx=013104617978576650762:hrpvx9uejrs";
+        script.async = true;
+      
+        document.body.appendChild(script);
+      
+        return () => {
+          document.body.removeChild(script);
+        }
+
+    }, [])
+
+    async function postRequest(value){
         const params = new URLSearchParams({
-            input: input,
+            input: value,
             in_lang: inputLanguage,
             out_lang: outputLanguage
         })
 
         const requestOptions = {
-        method: 'POST',
-        headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }),
-        body: params.toString()
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }),
+            body: params.toString()
         };
         const response = await fetch('https://cjsback.herokuapp.com/', requestOptions);    
         const translation = await response.json();
@@ -101,22 +112,21 @@ export default function App() {
         setOutputLanguage(value)
     } 
 
-    function autoTranslate(value){
+
+    const handleInputChange = (event) => {
+        allowTabs(); // TODO: move this to useEffect
+        const value = event.target.value;
         setInput(value);
 
         clearTimeout(timer)
         setTimer(setTimeout(() => {
-            postRequest()
+            postRequest(value)
         }, 500))
-    }
 
-    const handleInputChange = (event) => {
-        allowTabs();
-        const value = event.target.value;
-        autoTranslate(value)
       }
 
     return (
+        
         <React.Fragment>
             <CssBaseline />
             <AppBar position="relative">
@@ -130,8 +140,7 @@ export default function App() {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="md">
-                            <div class="gcse-search"></div>
-                            <AppBar position="static" color="white">
+                            <AppBar position="static" className={classes.languageBar}>
                                 <Grid container className={classes.basicGrid} spacing={2}>
                                     <Grid item xs={6}>
                                         <Tabs
@@ -145,6 +154,7 @@ export default function App() {
                                             <Tab value="py" label="Python" />
                                         </Tabs>
                                     </Grid>
+                                    {/* TODO: break up both sets of tabx */}
                                     <Grid item xs={6}>
                                         <Tabs
                                             value={outputLanguage}
