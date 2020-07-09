@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import useScript from './hooks/useScript.js';
 
 const useStyles = makeStyles(theme => ({
   heroContent: {
@@ -50,13 +51,16 @@ function allowTabs() {
 
 export default function App() {
     const classes = useStyles();
-    let timer = null;
 
+    // call google search bar
+    useScript('https://cse.google.com/cse.js?cx=013104617978576650762:hrpvx9uejrs');
+    
     // set state
-    const [input, setInput] = useState("")
-    const [output, setOutput] = useState("")
-    const [inputLanguage, setInputLanguage] = useState("js")
-    const [outputLanguage, setOutputLanguage] = useState("py")
+    const [timer, setTimer] = useState(null);
+    const [input, setInput] = useState("");
+    const [output, setOutput] = useState("");
+    const [inputLanguage, setInputLanguage] = useState("js");
+    const [outputLanguage, setOutputLanguage] = useState("py");
 
     // TODO: use get request to populate frontend
     async function getRequest() {
@@ -101,9 +105,9 @@ export default function App() {
         setInput(value);
 
         clearTimeout(timer)
-        timer = setTimeout(() => {
+        setTimer(setTimeout(() => {
             postRequest()
-        }, 500)   
+        }, 500))
     }
 
     const handleInputChange = (event) => {
@@ -126,6 +130,7 @@ export default function App() {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="md">
+                            <div class="gcse-search"></div>
                             <AppBar position="static" color="white">
                                 <Grid container className={classes.basicGrid} spacing={2}>
                                     <Grid item xs={6}>
