@@ -83,7 +83,6 @@ export default function App() {
         }),
         body: params.toString()
         };
-        console.log("input", input)
         const response = await fetch('https://cjsback.herokuapp.com/', requestOptions);    
         const translation = await response.json();
 
@@ -91,7 +90,6 @@ export default function App() {
     }
 
     const handleInputLanguageChange = (event, value) => {
-        console.log("inputLanguage change")
         setInputLanguage(value)
     } 
 
