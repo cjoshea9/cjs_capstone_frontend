@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
       background: "white"
   },
   paper: {
-    padding: theme.spacing(2),
     display: 'flex',
     overflow: 'auto',
     flexWrap: 'wrap',
@@ -31,6 +30,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent:"center",
     minHeight:180
   },
+  box: {
+    padding: theme.spacing(2),
+    height: "100%",
+  }
 }));
 
 // TODO: Use refs instead of this method
@@ -107,7 +110,6 @@ export default function App() {
         setOutputLanguage(value)
     } 
 
-
     const handleInputChange = (event) => {
         allowTabs(); // TODO: move this to useEffect
         const value = event.target.value;
@@ -117,11 +119,9 @@ export default function App() {
         setTimer(setTimeout(() => {
             postRequest(value)
         }, 500))
-
       }
 
     return (
-        
         <React.Fragment>
             <CssBaseline />
             <Navbar/>
@@ -137,6 +137,7 @@ export default function App() {
                               classes={classes}
                             />
                             <TranslateBoxes
+                              input= {input}
                               handleInputChange={handleInputChange}
                               output={output}
                               classes={classes}
