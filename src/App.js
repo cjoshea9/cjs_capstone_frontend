@@ -1,62 +1,40 @@
-import React from 'react';
-import './App.css';
-import Navbar from "./components/Navbar"
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
+const useStyles = makeStyles(theme => ({
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  basicGrid: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    alignItems:"center",
+    justifyContent:"center",
+    minHeight:180
+  },
+}));
 
-class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.timeout = 0
-    this.state = {
-      input: "",
-      output: "",
-      inputLanguage: "js",
-      outputLangauge: "py",
-    }
-    this.postRequest = this.postRequest.bind(this)
-    this.autoTranslate = this.autoTranslate.bind(this)
-  }
-  
-  postRequest() {
-    // TODO: add error checking before post and get request
-    const params = new URLSearchParams({
-      input: this.state.input,
-      in_lang: this.state.inputLanguage,
-      out_lang: this.state.outputLangauge
-    })
-
-    // submit user query to search bar
-    let query = this.state.input + " in "
-    if (this.state.outputLangauge === "js") {
-      query += "javascript";
-    }
-    if (this.state.outputLangauge === "py") {
-      query += "python";
-    }
-    this.querySearch(query);
-
-    fetch('https://cjsback.herokuapp.com/', {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
-      body: params.toString()
-    })
-      .then(res => res.json())
-      .then((data) => {
-        this.setState({
-          output: data['response']
-        })
-      })
-  }
-
-  allowTabs() {
+function allowTabs() {
     const textbox = document.getElementById("input-text-area")
     textbox.onkeydown = function(key) {
       if (key.code === "Tab") {
@@ -68,122 +46,144 @@ class App extends React.Component {
         return false
       }
     }
-  }
-
-  updateInputLanguage = (input) => {
-    this.setState({
-        inputLanguage: input.target.value
-    });
-  }
-
-  updateOutputLanguage = (input) => {
-    this.setState({
-        outputLangauge: input.target.value
-    });
-  }
-
-  // Adds script for search bar
-  componentDidMount () {
-    const script = document.createElement("script");
-    script.src = "https://cse.google.com/cse.js?cx=013104617978576650762:hrpvx9uejrs";
-    script.async = true;
-    document.body.appendChild(script);
-  }
-
-  querySearch(query) {
-    document.getElementById("gsc-i-id1").value = query;
-    const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
-    buttons[0].click();
-  }
-
-  autoTranslate(input) {
-    this.allowTabs()
-    
-    // updates state with what user typed
-    this.setState({
-      input: input.target.value
-    })
-
-    clearTimeout(this.timeout)
-    this.timeout = setTimeout(() => {
-      // translates if 500 ms passes after last keystroke
-      this.postRequest()
-    }, 500);
-  }
-  
-  render() {
-    return (
-      <div>
-        <Navbar/>
-       <div class="selectlanguage">
-       <FormControl>
-        <InputLabel>Input</InputLabel>
-       <Select
-          value={this.inputLanguage}
-          defaultValue={"js"}
-          onChange={this.updateInputLanguage}
-        >
-          <MenuItem value={"js"}>JavaScript</MenuItem>
-          <MenuItem value={"py"}>Python</MenuItem>
-        </Select>
-        </FormControl>
-        
-       
-        <FormControl>
-        <InputLabel>Output</InputLabel>
-        <Select
-          value={this.outputLangauge}
-          defaultValue={"py"}
-          onChange={this.updateOutputLanguage}
-        >
-          <MenuItem value={"js"}>JavaScript</MenuItem>
-          <MenuItem value={"py"}>Python</MenuItem>
-        </Select>
-        </FormControl>
-        </div>
-
-
-        <div className="textfields">
-          <TextField
-            className="filled-textarea"
-            id="input-text-area"
-            label="Enter Text"
-            multiline
-            rows = "5"
-            variant="filled"
-            onChange={this.autoTranslate}
-            InputProps={{
-              style: {
-                  fontFamily: "monospace"
-              }
-            }}
-          />
-          <TextField
-            className="filled-textarea"
-            label="Translate"
-            multiline
-            rows = "5"
-            variant="filled"
-            value={this.state.output}
-            InputProps={{
-              style: {
-                  fontFamily: "monospace"
-              }
-            }}
-          />
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={this.postRequest}
-            >
-            Translate
-          </Button>
-        </div>
-      
-        <div class="gcse-search"></div>
-      </div>
-    );
-  }
 }
 
-export default App;
+export default function App() {
+    const classes = useStyles();
+    let timer = null;
+
+    // set state
+    const [input, setInput] = useState("")
+    const [output, setOutput] = useState("")
+    const [inputLanguage, setInputLanguage] = useState("js")
+    const [outputLanguage, setOutputLanguage] = useState("py")
+
+    // TODO: use get request to populate frontend
+    async function getRequest() {
+        const res = await fetch(`https://cjsback.herokuapp.com/`)
+        const data = await res.json()
+    }
+
+    // deals with the fact that setting state is asynchronous
+    useEffect(() => {
+        autoTranslate(input)
+    }, [input])
+
+    async function postRequest(){
+        const params = new URLSearchParams({
+            input: input,
+            in_lang: inputLanguage,
+            out_lang: outputLanguage
+        })
+
+        const requestOptions = {
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }),
+        body: params.toString()
+        };
+        console.log("input", input)
+        const response = await fetch('https://cjsback.herokuapp.com/', requestOptions);    
+        const translation = await response.json();
+
+        setOutput(translation["response"])
+    }
+
+    const handleInputLanguageChange = (event, value) => {
+        console.log("inputLanguage change")
+        setInputLanguage(value)
+    } 
+
+    const handleOutputLanguageChange = (event, value) => {
+        setOutputLanguage(value)
+    } 
+
+    function autoTranslate(value){
+        setInput(value);
+
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            postRequest()
+        }, 500)   
+    }
+
+    const handleInputChange = (event) => {
+        allowTabs();
+        const value = event.target.value;
+        autoTranslate(value)
+      }
+
+    return (
+        <React.Fragment>
+            <CssBaseline />
+            <AppBar position="relative">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" noWrap>
+                        CodeTranslate
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <main>
+                {/* Hero unit */}
+                <div className={classes.heroContent}>
+                    <Container maxWidth="md">
+                            <AppBar position="static" color="white">
+                                <Grid container className={classes.basicGrid} spacing={2}>
+                                    <Grid item xs={6}>
+                                        <Tabs
+                                            value={inputLanguage}
+                                            onChange={handleInputLanguageChange}
+                                            indicatorColor="primary"
+                                            textColor="primary"
+                                            variant="fullWidth"
+                                        >
+                                            <Tab value= "js" label="JavaScript" />
+                                            <Tab value="py" label="Python" />
+                                        </Tabs>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Tabs
+                                            value={outputLanguage}
+                                            onChange={handleOutputLanguageChange}
+                                            indicatorColor="primary"
+                                            textColor="primary"
+                                            variant="fullWidth"
+                                        >
+                                            <Tab value= "js" label="JavaScript" />
+                                            <Tab value="py" label="Python" />
+                                        </Tabs>
+                                    </Grid>
+                                </Grid>
+                            </AppBar>
+                            <Paper className={classes.paper}>
+                                <Grid container className={classes.basicGrid} spacing={1}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                        id="input-text-area"
+                                        label="Input Code"
+                                        multiline
+                                        fullWidth
+                                        onChange={handleInputChange}
+                                        InputProps={{ disableUnderline: true }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                        id="standard-multiline-static"
+                                        label="Translation"
+                                        multiline
+                                        fullWidth
+                                        InputProps={{ disableUnderline: true }}
+                                        value={output}
+                                        disabled
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Paper>
+                    </Container>
+                </div>
+            </main>
+        </React.Fragment>
+    );
+}
