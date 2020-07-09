@@ -16,7 +16,10 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                     fullWidth
                     value={input}
                     onChange={handleInputChange}
-                    InputProps={{ disableUnderline: true }}
+                    InputProps={{
+                        style: {fontFamily: "monospace"},
+                        disableUnderline: true
+                    }}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -25,7 +28,10 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                     label="Translation"
                     multiline
                     fullWidth
-                    InputProps={{ disableUnderline: true }}
+                    InputProps={{
+                        style: {fontFamily: "monospace"},
+                        disableUnderline: true
+                    }}
                     value={output}
                     disabled
                     />
