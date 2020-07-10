@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
       background: "white"
   },
   paper: {
-    padding: theme.spacing(2),
     display: 'flex',
     overflow: 'auto',
     flexWrap: 'wrap',
@@ -31,6 +30,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent:"center",
     minHeight:180
   },
+  box: {
+    padding: theme.spacing(2),
+    height: "100%",
+  }
 }));
 
 // TODO: Use refs instead of this method
@@ -79,11 +82,11 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(value){
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){
         const params = new URLSearchParams({
-            input: value,
-            in_lang: inputLanguage,
-            out_lang: outputLanguage
+            input: inputValue,
+            in_lang: inputLanguageValue,
+            out_lang: outputLanguageValue
         })
 
         const requestOptions = {
@@ -101,12 +104,13 @@ export default function App() {
 
     const handleInputLanguageChange = (event, value) => {
         setInputLanguage(value)
+        postRequest(input, value, outputLanguage)
     } 
 
     const handleOutputLanguageChange = (event, value) => {
         setOutputLanguage(value)
+        postRequest(input, inputLanguage, value)
     } 
-
 
     const handleInputChange = (event) => {
         allowTabs(); // TODO: move this to useEffect
@@ -115,13 +119,11 @@ export default function App() {
 
         clearTimeout(timer)
         setTimer(setTimeout(() => {
-            postRequest(value)
+            postRequest(value, inputLanguage, outputLanguage)
         }, 500))
-
       }
 
     return (
-        
         <React.Fragment>
             <CssBaseline />
             <Navbar/>
@@ -137,6 +139,7 @@ export default function App() {
                               classes={classes}
                             />
                             <TranslateBoxes
+                              input= {input}
                               handleInputChange={handleInputChange}
                               output={output}
                               classes={classes}
