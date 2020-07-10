@@ -26,13 +26,13 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                     </Box>
                 </Grid>
                 <Grid item xs={6}>
-                    <Box className = {classes.box} bgcolor="grey.300">
+                    <Box className = {classes.box} bgcolor="grey.200">
                         <TextField
                         id="standard-multiline-static"
                         label="Translation"
                         multiline
                         fullWidth
-                        // variant="filled"
+                        // TODO: create more contrast in output text font color
                         InputProps={{
                             style: {fontFamily: "monospace"},
                             disableUnderline: true
