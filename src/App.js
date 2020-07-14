@@ -65,10 +65,13 @@ export default function App() {
     async function getRequest() {
         const res = await fetch(`https://cjsback.herokuapp.com/`)
         const data = await res.json()
+        return data
     }
 
     // deals with the fact that setting state is asynchronous
     useEffect(() => {
+        getRequest() // send get request on page load to ping backend so it wakes up
+        
         const script = document.createElement('script');
 
         script.src = "https://cse.google.com/cse.js?cx=013104617978576650762:hrpvx9uejrs";
@@ -84,20 +87,25 @@ export default function App() {
 
     async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){
         const params = new URLSearchParams({
-            input: inputValue,
-            in_lang: inputLanguageValue,
-            out_lang: outputLanguageValue
+          input: inputValue,
+          in_lang: inputLanguageValue,
+          out_lang: outputLanguageValue
         })
 
         const requestOptions = {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }),
-            body: params.toString()
+          method: 'POST',
+          headers: new Headers({
+              'Content-Type': 'application/x-www-form-urlencoded',
+          }),
+          body: params.toString()
         };
         const response = await fetch('https://cjsback.herokuapp.com/', requestOptions);    
         const translation = await response.json();
+        
+        // change in_lang only if it is defined
+        if (typeof translation['response_in_lang'] !== "undefined"){
+          setInputLanguage(translation['response_in_lang'])
+        }
 
         setOutput(translation["response"])
     }
