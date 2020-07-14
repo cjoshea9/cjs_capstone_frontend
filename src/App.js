@@ -51,7 +51,6 @@ function allowTabs() {
     }
 }
 
-
 export default function App() {
     const classes = useStyles();
 
