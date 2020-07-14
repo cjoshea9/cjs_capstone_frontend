@@ -70,7 +70,7 @@ export default function App() {
 
     // deals with the fact that setting state is asynchronous
     useEffect(() => {
-        getRequest() // send get request on page load to ping backend so it wakes up
+        getRequest() // send get request immediately to ping backend so it wakes up
         
         const script = document.createElement('script');
 
