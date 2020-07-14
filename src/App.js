@@ -61,16 +61,13 @@ export default function App() {
     const [inputLanguage, setInputLanguage] = useState("js");
     const [outputLanguage, setOutputLanguage] = useState("py");
 
-    // TODO: use get request to populate frontend
-    async function getRequest() {
-        const res = await fetch(`https://cjsback.herokuapp.com/`)
-        const data = await res.json()
-        return data
+    async function wakeUpServer() {
+        fetch(`https://cjsback.herokuapp.com/`)
     }
 
     // deals with the fact that setting state is asynchronous
     useEffect(() => {
-        getRequest() // send get request immediately to ping backend so it wakes up
+        wakeUpServer() // send get request immediately to ping backend so it wakes up
         
         const script = document.createElement('script');
 
@@ -103,7 +100,7 @@ export default function App() {
         const translation = await response.json();
         
         // change in_lang only if it is defined
-        if (typeof translation['response_in_lang'] !== "undefined"){
+        if (translation['response_in_lang'] !== "undefined"){
           setInputLanguage(translation['response_in_lang'])
         }
 
