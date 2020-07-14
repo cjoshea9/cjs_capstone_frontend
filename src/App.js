@@ -51,6 +51,7 @@ function allowTabs() {
     }
 }
 
+
 export default function App() {
     const classes = useStyles();
 
@@ -102,6 +103,24 @@ export default function App() {
         setOutput(translation["response"])
     }
 
+    /**
+     * Function accesses google search custom bar to add query from input 
+     * text box directly into search bar which then searches google. 
+     */
+    function querySearch(inputValue, outputLanguageValue) {
+      let query = inputValue + " in "
+      if (outputLanguageValue === "js") { // FIXME: this should eventually come from backend
+        query += "javascript";
+      }
+      if (outputLanguageValue === "py") {
+        query += "python";
+      }
+
+      document.getElementById("gsc-i-id1").value = query;
+      const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
+      buttons[0].click();
+    }
+
     const handleInputLanguageChange = (event, value) => {
         setInputLanguage(value)
         postRequest(input, value, outputLanguage)
@@ -120,6 +139,7 @@ export default function App() {
         clearTimeout(timer)
         setTimer(setTimeout(() => {
             postRequest(value, inputLanguage, outputLanguage)
+            querySearch(value, outputLanguage)
         }, 500))
       }
 
@@ -146,6 +166,7 @@ export default function App() {
                             />
                     </Container>
                 </div>
+                <div class="gcse-search"></div>
             </main>
         </React.Fragment>
     );
