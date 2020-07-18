@@ -173,7 +173,7 @@ export default function App() {
                             />
                     </Container>
                 </div>
-                <div class="gcse-search"></div>
+                <div className="gcse-search"></div>
             </main>
         </React.Fragment>
     );
