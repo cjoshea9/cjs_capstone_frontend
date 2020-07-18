@@ -35,14 +35,6 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                             <Tab key={code} value={code} label={supportedLanguages[code]["name"]} />
                         ))}
                     </Tabs>
-                    {/* <Tabs
-                        value={inputLanguage}
-                        onChange={handleInputLanguageChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="fullWidth"
-                    > */}
-                    {/* </Tabs> */}
                 </Grid>
                 {/* TODO: break up both sets of tabs */}
                 <Grid item xs={6}>
@@ -58,7 +50,6 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                             <Tab key={code} value={code} label={supportedLanguages[code]["name"]} />
                         ))}
                     </Tabs>
-
                 </Grid>
             </Grid>
         </AppBar>
