@@ -36,7 +36,6 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                         ))}
                     </Tabs>
                 </Grid>
-                {/* TODO: break up both sets of tabs */}
                 <Grid item xs={6}>
                     <Tabs 
                       value={outputLanguage} 

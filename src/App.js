@@ -69,9 +69,8 @@ export default function App() {
         setSupportedLanguages(data["supported_languages"]);
     }
 
-    // deals with the fact that setting state is asynchronous
     useEffect(() => {
-        getRequest() // send get request immediately to ping backend so it wakes up
+        getRequest() // send get request immediately to ping backend and populate frontend
         
         const script = document.createElement('script');
 
