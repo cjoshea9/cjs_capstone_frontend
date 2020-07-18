@@ -6,7 +6,18 @@ import Tab from '@material-ui/core/Tab';
 
 
 export default function LanguageBar({supportedLanguages, inputLanguage, outputLanguage, handleInputLanguageChange, handleOutputLanguageChange, classes}) {
-    const langCodes = Object.keys(supportedLanguages);
+
+    // Get input and output language codes
+    const inputLangCodes = []
+    const outputLangCodes = []
+    for (const code in supportedLanguages){
+        if (supportedLanguages[code]["is_input_lang"]){
+            inputLangCodes.push(code);
+        }
+        if (supportedLanguages[code]["is_output_lang"]){
+            outputLangCodes.push(code);
+        }
+    }
     
     return(
         <AppBar position="static" color="default">
@@ -20,8 +31,8 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       variant="scrollable" 
                       scrollButtons="auto"
                     >
-                        {langCodes.map( code => (
-                            <Tab key={code} value={code} label={supportedLanguages[code]} />
+                        {inputLangCodes.map( code => (
+                            <Tab key={code} value={code} label={supportedLanguages[code]["name"]} />
                         ))}
                     </Tabs>
                     {/* <Tabs
@@ -43,8 +54,8 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       variant="scrollable" 
                       scrollButtons="auto"
                     >
-                        {langCodes.map( code => (
-                            <Tab key={code} value={code} label={supportedLanguages[code]} />
+                        {outputLangCodes.map( code => (
+                            <Tab key={code} value={code} label={supportedLanguages[code]["name"]} />
                         ))}
                     </Tabs>
 

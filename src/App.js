@@ -118,7 +118,7 @@ export default function App() {
      */
     function querySearch(inputValue, outputLanguageValue) {
       let query = inputValue + " in "
-      query += supportedLanguages[outputLanguageValue] // get pretty name
+      query += supportedLanguages[outputLanguageValue]["name"] // get pretty name
 
       document.getElementById("gsc-i-id1").value = query;
       const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
@@ -133,6 +133,7 @@ export default function App() {
     const handleOutputLanguageChange = (event, value) => {
         setOutputLanguage(value)
         postRequest(input, inputLanguage, value)
+        querySearch(input, value)
     } 
 
     const handleInputChange = (event) => {
