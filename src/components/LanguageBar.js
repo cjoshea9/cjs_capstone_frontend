@@ -18,15 +18,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
             outputLangCodes.push(code);
         }
     }
-
-    function getLabel(code) {
-        if (supportedLanguages[code]["is_beta"]) {
-            return supportedLanguages[code]["name"] + " (beta)" 
-        }
-        return supportedLanguages[code]["name"]
-    }
-
-
+    
     return(
         <AppBar position="static" color="default">
             <Grid container className={classes.basicGrid} spacing={2}>
@@ -40,7 +32,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       scrollButtons="auto"
                     >
                         {inputLangCodes.map( code => (
-                           <Tab key={code} value={code} label={getLabel(code)} />
+                            <Tab key={code} value={code} label={supportedLanguages[code]["name"]} />
                         ))}
                     </Tabs>
                 </Grid>
@@ -54,7 +46,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       scrollButtons="auto"
                     >
                         {outputLangCodes.map( code => (
-                            <Tab key={code} value={code} label={getLabel(code)} />
+                            <Tab key={code} value={code} label={supportedLanguages[code]["name"]} />
                         ))}
                     </Tabs>
                 </Grid>
