@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   box: {
     padding: theme.spacing(2),
     height: "100%",
-  }
+  },
 }));
 
 // TODO: Use refs instead of this method
@@ -52,7 +52,8 @@ function allowTabs() {
 }
 
 export default function App() {
-    const classes = useStyles();
+  const BACKEND_URL = `https://cjsback.herokuapp.com/`
+  const classes = useStyles();
 
     // set state
     const [timer, setTimer] = useState(null);
@@ -60,14 +61,16 @@ export default function App() {
     const [output, setOutput] = useState("");
     const [inputLanguage, setInputLanguage] = useState("js");
     const [outputLanguage, setOutputLanguage] = useState("py");
+    const [supportedLanguages, setSupportedLanguages] = useState([]);
 
-    async function wakeUpServer() {
-        fetch(`https://cjsback.herokuapp.com/`)
+    async function getRequest() {
+        const res = await fetch(BACKEND_URL);
+        const data = await res.json();
+        setSupportedLanguages(data["supported_languages"]);
     }
 
-    // deals with the fact that setting state is asynchronous
     useEffect(() => {
-        wakeUpServer() // send get request immediately to ping backend so it wakes up
+        getRequest() // send get request immediately to ping backend and populate frontend
         
         const script = document.createElement('script');
 
@@ -92,11 +95,12 @@ export default function App() {
         const requestOptions = {
           method: 'POST',
           headers: new Headers({
+            
               'Content-Type': 'application/x-www-form-urlencoded',
           }),
           body: params.toString()
         };
-        const response = await fetch('https://cjsback.herokuapp.com/', requestOptions);    
+        const response = await fetch(BACKEND_URL, requestOptions);    
         const translation = await response.json();
         
         // change in_lang only if it is defined
@@ -113,12 +117,7 @@ export default function App() {
      */
     function querySearch(inputValue, outputLanguageValue) {
       let query = inputValue + " in "
-      if (outputLanguageValue === "js") { // FIXME: this should eventually come from backend
-        query += "javascript";
-      }
-      if (outputLanguageValue === "py") {
-        query += "python";
-      }
+      query += supportedLanguages[outputLanguageValue]["name"] // get pretty name
 
       document.getElementById("gsc-i-id1").value = query;
       const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
@@ -133,6 +132,7 @@ export default function App() {
     const handleOutputLanguageChange = (event, value) => {
         setOutputLanguage(value)
         postRequest(input, inputLanguage, value)
+        querySearch(input, value)
     } 
 
     const handleInputChange = (event) => {
@@ -155,13 +155,15 @@ export default function App() {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="md">
-                            <LanguageBar 
-                              inputLanguage={inputLanguage} 
-                              outputLanguage={outputLanguage} 
-                              handleInputLanguageChange= {handleInputLanguageChange} 
-                              handleOutputLanguageChange= {handleOutputLanguageChange} 
-                              classes={classes}
-                            />
+                            { Object.keys(supportedLanguages).length > 0 &&
+                              <LanguageBar 
+                                supportedLanguages = {supportedLanguages}
+                                inputLanguage={inputLanguage} 
+                                outputLanguage={outputLanguage} 
+                                handleInputLanguageChange= {handleInputLanguageChange} 
+                                handleOutputLanguageChange= {handleOutputLanguageChange} 
+                                classes={classes}
+                            />}
                             <TranslateBoxes
                               input= {input}
                               handleInputChange={handleInputChange}
@@ -170,7 +172,7 @@ export default function App() {
                             />
                     </Container>
                 </div>
-                <div class="gcse-search"></div>
+                <div className="gcse-search"></div>
             </main>
         </React.Fragment>
     );
