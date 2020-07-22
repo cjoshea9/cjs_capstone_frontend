@@ -155,39 +155,43 @@ export default function App() {
             querySearch(value, outputLanguage)
         }, 500))
       }
-
-    return (
+    
+    if (loading) {
+      return (
         <React.Fragment>
-            <CssBaseline />
             <Navbar/>
-            <div>
-              {loading 
-              ? <div className={classes.loadingPage}><CircularProgress size="100px"/></div>
-              : <main>
-                  {/* Hero unit */}
-                  <div className={classes.heroContent}>
-                      <Container maxWidth="md">
-                              { Object.keys(supportedLanguages).length > 0 &&
-                                <LanguageBar 
-                                  supportedLanguages = {supportedLanguages}
-                                  inputLanguage={inputLanguage} 
-                                  outputLanguage={outputLanguage} 
-                                  handleInputLanguageChange= {handleInputLanguageChange} 
-                                  handleOutputLanguageChange= {handleOutputLanguageChange} 
-                                  classes={classes}
-                              />}
-                              <TranslateBoxes
-                                input= {input}
-                                handleInputChange={handleInputChange}
-                                output={output}
-                                classes={classes}
-                              />
-                      </Container>
-                  </div>
-                  <div className="gcse-search"></div>
-              </main>
-            }
-            </div>
+            <div className={classes.loadingPage}><CircularProgress size="100px"/></div>
         </React.Fragment>
+      )
+    }
+    
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <Navbar/>
+        <main>
+          {/* Hero unit */}
+          <div className={classes.heroContent}>
+            <Container maxWidth="md">
+                    { Object.keys(supportedLanguages).length > 0 &&
+                      <LanguageBar 
+                        supportedLanguages = {supportedLanguages}
+                        inputLanguage={inputLanguage} 
+                        outputLanguage={outputLanguage} 
+                        handleInputLanguageChange= {handleInputLanguageChange} 
+                        handleOutputLanguageChange= {handleOutputLanguageChange} 
+                        classes={classes}
+                    />}
+                    <TranslateBoxes
+                      input= {input}
+                      handleInputChange={handleInputChange}
+                      output={output}
+                      classes={classes}
+                    />
+            </Container>
+          </div>
+          <div className="gcse-search"></div>
+        </main>
+      </React.Fragment>
     );
 }
