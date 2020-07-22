@@ -162,7 +162,7 @@ export default function App() {
     if (loading) {
       return (
         <React.Fragment>
-            <Navbar/>
+            <Navbar classes={classes}/>
             <div className={classes.loadingPage}><CircularProgress size="100px"/></div>
         </React.Fragment>
       )
@@ -171,7 +171,7 @@ export default function App() {
     return (
       <React.Fragment>
         <CssBaseline />
-        <Navbar/>
+        <Navbar classes={classes}/>
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
