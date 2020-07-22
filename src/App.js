@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     height: "100%",
   },
+  title: {
+    flexGrow: 1,
+  }
 }));
 
 // TODO: Use refs instead of this method
@@ -150,7 +153,7 @@ export default function App() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Navbar/>
+            <Navbar classes={classes}/>
             <main>
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
