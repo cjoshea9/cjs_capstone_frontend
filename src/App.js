@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     height: '80vh',
     justifyContent:"center",
   }, 
+  title: {
+    flexGrow: 1,
+  }
 }));
 
 // TODO: Use refs instead of this method
