@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import LanguageBar from './components/LanguageBar';
 import TranslateBoxes from './components/TranslateBoxes';
 import Navbar from './components/Navbar';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,18 +23,24 @@ const useStyles = makeStyles(theme => ({
       background: "white"
   },
   paper: {
-    display: 'flex',
-    overflow: 'auto',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
     alignItems:"center",
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
     justifyContent:"center",
-    minHeight:180
+    minHeight:180,
+    overflow: 'auto',
   },
   box: {
-    padding: theme.spacing(2),
     height: "100%",
+    padding: theme.spacing(2),
   },
+  loadingPage: {
+    alignItems:"center",
+    display: 'flex',
+    height: '80vh',
+    justifyContent:"center",
+  }, 
   title: {
     flexGrow: 1,
   }
@@ -65,11 +72,13 @@ export default function App() {
     const [inputLanguage, setInputLanguage] = useState("js");
     const [outputLanguage, setOutputLanguage] = useState("py");
     const [supportedLanguages, setSupportedLanguages] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     async function getRequest() {
         const res = await fetch(BACKEND_URL);
         const data = await res.json();
         setSupportedLanguages(data["supported_languages"]);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -149,34 +158,43 @@ export default function App() {
             querySearch(value, outputLanguage)
         }, 500))
       }
-
-    return (
+    
+    if (loading) {
+      return (
         <React.Fragment>
-            <CssBaseline />
             <Navbar classes={classes}/>
-            <main>
-                {/* Hero unit */}
-                <div className={classes.heroContent}>
-                    <Container maxWidth="md">
-                            { Object.keys(supportedLanguages).length > 0 &&
-                              <LanguageBar 
-                                supportedLanguages = {supportedLanguages}
-                                inputLanguage={inputLanguage} 
-                                outputLanguage={outputLanguage} 
-                                handleInputLanguageChange= {handleInputLanguageChange} 
-                                handleOutputLanguageChange= {handleOutputLanguageChange} 
-                                classes={classes}
-                            />}
-                            <TranslateBoxes
-                              input= {input}
-                              handleInputChange={handleInputChange}
-                              output={output}
-                              classes={classes}
-                            />
-                    </Container>
-                </div>
-                <div className="gcse-search"></div>
-            </main>
+            <div className={classes.loadingPage}><CircularProgress size="100px"/></div>
         </React.Fragment>
+      )
+    }
+    
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <Navbar classes={classes}/>
+        <main>
+          {/* Hero unit */}
+          <div className={classes.heroContent}>
+            <Container maxWidth="md">
+                    { Object.keys(supportedLanguages).length > 0 &&
+                      <LanguageBar 
+                        supportedLanguages = {supportedLanguages}
+                        inputLanguage={inputLanguage} 
+                        outputLanguage={outputLanguage} 
+                        handleInputLanguageChange= {handleInputLanguageChange} 
+                        handleOutputLanguageChange= {handleOutputLanguageChange} 
+                        classes={classes}
+                    />}
+                    <TranslateBoxes
+                      input= {input}
+                      handleInputChange={handleInputChange}
+                      output={output}
+                      classes={classes}
+                    />
+            </Container>
+          </div>
+          <div className="gcse-search"></div>
+        </main>
+      </React.Fragment>
     );
 }
