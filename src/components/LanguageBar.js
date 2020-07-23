@@ -10,7 +10,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
     // Get input and output language codes
     const inputLangCodes = []
     const outputLangCodes = []
-    // Get detect language from the backend
+    // TODO Get detect language from the backend
     inputLangCodes.push("auto");
     for (const code in supportedLanguages){
         if (supportedLanguages[code]["is_input_lang"]){

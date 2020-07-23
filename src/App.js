@@ -63,7 +63,7 @@ function allowTabs() {
 
 export default function App() {
   // TODO change back to not dev
-  const BACKEND_URL = `https://cjsbackdev.herokuapp.com/`
+  const BACKEND_URL = `https://cjsback.herokuapp.com/`
   const classes = useStyles();
 
     // set state
