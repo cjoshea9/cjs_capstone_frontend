@@ -23,7 +23,8 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
 
     function getLabel(code) {
         if (code === "auto") {
-            if (languageDetected !== "") {
+            console.log(languageDetected)
+            if (languageDetected !== "" && languageDetected !== "auto") {
                 return supportedLanguages[languageDetected]["name"] + " - detected"
             }
             return "Detect Language"

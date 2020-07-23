@@ -116,7 +116,6 @@ export default function App() {
         };
         const response = await fetch(BACKEND_URL, requestOptions);    
         const translation = await response.json();
-        
         // change in_lang only if it is defined
         if (translation['response_in_lang'] !== "undefined"){
           if (inputLanguageValue === "auto") {
