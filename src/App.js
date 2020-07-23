@@ -81,6 +81,7 @@ export default function App() {
         const data = await res.json();
         setSupportedLanguages(data["supported_languages"]);
         setLoading(false);
+        sessionStorage.setItem('id', Date.now());
     }
 
     useEffect(() => {
@@ -99,11 +100,12 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){ 
         const params = new URLSearchParams({
           input: inputValue,
           in_lang: inputLanguageValue,
-          out_lang: outputLanguageValue
+          out_lang: outputLanguageValue,
+          id: sessionStorage.getItem('id')
         })
 
         const requestOptions = {
