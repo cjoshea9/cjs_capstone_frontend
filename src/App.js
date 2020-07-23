@@ -81,7 +81,10 @@ export default function App() {
         const data = await res.json();
         setSupportedLanguages(data["supported_languages"]);
         setLoading(false);
-        sessionStorage.setItem('id', Date.now());
+        if (sessionStorage.getItem('id') == null) {
+          sessionStorage.setItem('id', Date.now());
+        }
+        
     }
 
     useEffect(() => {
