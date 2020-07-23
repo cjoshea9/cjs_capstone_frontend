@@ -62,6 +62,7 @@ function allowTabs() {
 }
 
 export default function App() {
+  // TODO change back to not dev
   const BACKEND_URL = `https://cjsback.herokuapp.com/`
   const classes = useStyles();
 
@@ -69,10 +70,11 @@ export default function App() {
     const [timer, setTimer] = useState(null);
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
-    const [inputLanguage, setInputLanguage] = useState("js");
+    const [inputLanguage, setInputLanguage] = useState("auto");
     const [outputLanguage, setOutputLanguage] = useState("py");
     const [supportedLanguages, setSupportedLanguages] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [languageDetected, setLanguageDetected] = useState("");
 
     async function getRequest() {
         const res = await fetch(BACKEND_URL);
@@ -117,7 +119,14 @@ export default function App() {
         
         // change in_lang only if it is defined
         if (translation['response_in_lang'] !== "undefined"){
-          setInputLanguage(translation['response_in_lang'])
+          if (inputLanguageValue === "auto") {
+            setInputLanguage("auto")
+            setLanguageDetected(translation['response_in_lang'])
+          }
+          else {
+            setInputLanguage(translation['response_in_lang'])
+            setLanguageDetected("")
+          }
         }
 
         setOutput(translation["response"])
@@ -131,19 +140,21 @@ export default function App() {
       let query = inputValue + " in "
       query += supportedLanguages[outputLanguageValue]["name"] // get pretty name
 
-      document.getElementById("gsc-i-id1").value = query;
-      const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
-      buttons[0].click();
+      if (document.getElementById("gsc-i-id1")) {
+        document.getElementById("gsc-i-id1").value = query;
+        const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
+        buttons[0].click();
+      }
     }
 
     const handleInputLanguageChange = (event, value) => {
-        setInputLanguage(value)
-        postRequest(input, value, outputLanguage)
+      setInputLanguage(value)  
+      postRequest(input, value, outputLanguage)
     } 
 
     const handleOutputLanguageChange = (event, value) => {
-        setOutputLanguage(value)
         postRequest(input, inputLanguage, value)
+        setOutputLanguage(value)
         querySearch(input, value)
     } 
 
@@ -181,6 +192,7 @@ export default function App() {
                         supportedLanguages = {supportedLanguages}
                         inputLanguage={inputLanguage} 
                         outputLanguage={outputLanguage} 
+                        languageDetected={languageDetected}
                         handleInputLanguageChange= {handleInputLanguageChange} 
                         handleOutputLanguageChange= {handleOutputLanguageChange} 
                         classes={classes}
