@@ -140,9 +140,11 @@ export default function App() {
       let query = inputValue + " in "
       query += supportedLanguages[outputLanguageValue]["name"] // get pretty name
 
-      document.getElementById("gsc-i-id1").value = query;
-      const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
-      buttons[0].click();
+      if (document.getElementById("gsc-i-id1")) {
+        document.getElementById("gsc-i-id1").value = query;
+        const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
+        buttons[0].click();
+      }
     }
 
     const handleInputLanguageChange = (event, value) => {

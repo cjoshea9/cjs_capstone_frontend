@@ -10,6 +10,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
     // Get input and output language codes
     const inputLangCodes = []
     const outputLangCodes = []
+    // Get detect language from the backend
     inputLangCodes.push("auto");
     for (const code in supportedLanguages){
         if (supportedLanguages[code]["is_input_lang"]){
@@ -21,17 +22,16 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
     }
 
     function getLabel(code) {
+        if (code === "auto") {
+            if (languageDetected !== "") {
+                return supportedLanguages[languageDetected]["name"] + " - detected"
+            }
+            return "Detect Language"
+        }
         if (supportedLanguages[code]["is_beta"]) {
             return supportedLanguages[code]["name"] + " (beta)"
         }
         return supportedLanguages[code]["name"]
-    }
-
-    function getDetectLanguageLabel(code) {
-        if (languageDetected !== "") {
-            return supportedLanguages[languageDetected]["name"] + " - detected"
-        }
-        return "Detect Language"
     }
     
     return(
@@ -47,7 +47,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       scrollButtons="auto"
                     >
                         {inputLangCodes.map( code => (
-                            <Tab key={code} value={code} label={code === "auto" ? getDetectLanguageLabel() : getLabel(code)} />
+                            <Tab key={code} value={code} label={getLabel(code)} />
                         ))}
                     </Tabs>
                 </Grid>
