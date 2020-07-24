@@ -32,9 +32,8 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                         label="Translation"
                         multiline
                         fullWidth
-                        // TODO: create more contrast in output text font color
                         InputProps={{
-                            style: {fontFamily: "monospace"},
+                            style: {fontFamily: "monospace", color: "black"},
                             disableUnderline: true
                         }}
                         value={output}
