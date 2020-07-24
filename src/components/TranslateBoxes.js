@@ -19,7 +19,7 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                         value={input}
                         onChange={handleInputChange}
                         InputProps={{
-                            style: {fontFamily: "monospace", fontSize: 18},
+                            style: {fontFamily: "monospace"},
                             disableUnderline: true
                         }}
                         />
@@ -33,7 +33,7 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                         multiline
                         fullWidth
                         InputProps={{
-                            style: {fontFamily: "monospace", color: "black", fontSize: 18},
+                            style: {fontFamily: "monospace", color: "black"},
                             disableUnderline: true
                         }}
                         value={output}
