@@ -70,6 +70,7 @@ export default function App() {
     const [timer, setTimer] = useState(null);
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
+    const [errors, setErrors] = useState({})
     const [inputLanguage, setInputLanguage] = useState("auto");
     const [outputLanguage, setOutputLanguage] = useState("py");
     const [supportedLanguages, setSupportedLanguages] = useState([]);
@@ -116,7 +117,6 @@ export default function App() {
         };
         const response = await fetch(BACKEND_URL, requestOptions);    
         const translation = await response.json();
-        console.log(translation)
         // change in_lang only if it is defined
         if (translation['response_in_lang'] !== "undefined"){
           if (inputLanguageValue === "auto") {
@@ -128,7 +128,8 @@ export default function App() {
             setLanguageDetected("")
           }
         }
-
+        
+        setErrors(translation["error"])
         setOutput(translation["response"])
     }
 
@@ -201,6 +202,7 @@ export default function App() {
                       input= {input}
                       handleInputChange={handleInputChange}
                       output={output}
+                      errors={errors}
                       classes={classes}
                     />
             </Container>
