@@ -43,6 +43,11 @@ const useStyles = makeStyles(theme => ({
   }, 
   title: {
     flexGrow: 1,
+  },
+  tab: {
+    fontSize: 10,
+    minWidth: 110,
+    width: 110
   }
 }));
 
