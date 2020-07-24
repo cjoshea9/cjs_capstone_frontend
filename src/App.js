@@ -82,7 +82,7 @@ export default function App() {
         setSupportedLanguages(data["supported_languages"]);
         setLoading(false);
         if (sessionStorage.getItem('id') == null) {
-          sessionStorage.setItem('id', Date.now());
+          sessionStorage.setItem('id', uuidv4());
         }
         
     }
@@ -150,6 +150,14 @@ export default function App() {
         const buttons = document.getElementsByClassName("gsc-search-button gsc-search-button-v2")
         buttons[0].click();
       }
+    }
+    
+    // generates random GUID to use a session id
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
     }
 
     const handleInputLanguageChange = (event, value) => {
