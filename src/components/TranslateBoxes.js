@@ -12,7 +12,6 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
 
             // go through output text and find any strings with pattern $$E_$$
             const regexp = /\$\$E.\$\$/g
-
             const matches = [...output.matchAll(regexp)];
 
             for (const match of matches){
@@ -58,7 +57,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                             style: {fontFamily: "monospace"},
                             disableUnderline: true
                         }}
-                        value={addErrorsToOutput(output, errors)}
+                        value={output && errors && addErrorsToOutput(output, errors)}
                         disabled
                         />
                     </Box>
