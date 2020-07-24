@@ -46,8 +46,8 @@ const useStyles = makeStyles(theme => ({
   },
   tab: {
     fontSize: 11,
-    minWidth: 110,
-    width: 110
+    minWidth: 130,
+    width: 130
   }
 }));
 
@@ -203,7 +203,7 @@ export default function App() {
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
-            <Container maxWidth="md">
+            <Container maxWidth="lg">
                     { Object.keys(supportedLanguages).length > 0 &&
                       <LanguageBar 
                         supportedLanguages = {supportedLanguages}
