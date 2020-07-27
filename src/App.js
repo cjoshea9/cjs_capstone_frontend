@@ -157,9 +157,9 @@ export default function App() {
     } 
 
     const handleOutputLanguageChange = (event, value) => {
-      postRequest(value, inputLanguage, outputLanguage)
-        setOutputLanguage(value)
-        querySearch(input, value)
+      postRequest(input, inputLanguage, value)
+      setOutputLanguage(value)
+      querySearch(input, value)
     }  
     
     function allowTabs() {
