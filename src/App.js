@@ -88,7 +88,7 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue, selectionStart){   
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue){   
         const params = new URLSearchParams({
           input: inputValue,
           in_lang: inputLanguageValue,
@@ -146,11 +146,11 @@ export default function App() {
 
     const handleInputLanguageChange = (event, value) => {
       setInputLanguage(value)  
-      postRequest(input, value, outputLanguage, document.getElementById("input-text-area").selectionStart)
+      postRequest(input, value, outputLanguage)
     } 
 
     const handleOutputLanguageChange = (event, value) => {
-      postRequest(value, inputLanguage, outputLanguage, document.getElementById("input-text-area").selectionStart)
+      postRequest(value, inputLanguage, outputLanguage)
         setOutputLanguage(value)
         querySearch(input, value)
     }  
@@ -178,7 +178,7 @@ export default function App() {
 
         clearTimeout(timer)
         setTimer(setTimeout(() => {
-            postRequest(value, inputLanguage, outputLanguage, document.getElementById("input-text-area").selectionStart)
+            postRequest(value, inputLanguage, outputLanguage)
             querySearch(value, outputLanguage)
         }, 700))
       }
