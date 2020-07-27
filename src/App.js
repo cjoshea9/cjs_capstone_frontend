@@ -103,7 +103,7 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){ 
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue, selectionStart){ 
         const params = new URLSearchParams({
           input: inputValue,
           in_lang: inputLanguageValue,
@@ -132,8 +132,14 @@ export default function App() {
             setLanguageDetected("")
           }
         }
-
         setOutput(translation["response"])
+        
+        // if tab is cursor gets moved back add tab
+        const textbox = document.getElementById("input-text-area")
+        if (textbox.selectionStart < selectionStart) {
+          textbox.selectionStart += 1;
+          textbox.value += "\t";
+        }
     }
 
     /**
@@ -161,11 +167,11 @@ export default function App() {
 
     const handleInputLanguageChange = (event, value) => {
       setInputLanguage(value)  
-      postRequest(input, value, outputLanguage)
+      postRequest(input, value, outputLanguage, document.getElementById("input-text-area").selectionStart)
     } 
 
     const handleOutputLanguageChange = (event, value) => {
-        postRequest(input, inputLanguage, value)
+      postRequest(value, inputLanguage, outputLanguage, document.getElementById("input-text-area").selectionStart)
         setOutputLanguage(value)
         querySearch(input, value)
     } 
@@ -177,9 +183,9 @@ export default function App() {
 
         clearTimeout(timer)
         setTimer(setTimeout(() => {
-            postRequest(value, inputLanguage, outputLanguage)
+            postRequest(value, inputLanguage, outputLanguage, document.getElementById("input-text-area").selectionStart)
             querySearch(value, outputLanguage)
-        }, 500))
+        }, 700))
       }
     
     if (loading) {
