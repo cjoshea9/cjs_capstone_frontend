@@ -51,21 +51,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// TODO: Use refs instead of this method
-function allowTabs() {
-    const textbox = document.getElementById("input-text-area")
-    textbox.onkeydown = function(key) {
-      if (key.code === "Tab") {
-        const val = this.value
-        const start = this.selectionStart
-        const end = this.selectionEnd
-        this.value = val.substring(0, start) + '\t' + val.substring(end)
-        this.selectionStart = this.selectionEnd = start + 1
-        return false
-      }
-    }
-}
-
 export default function App() {
   // TODO change back to not dev
   const BACKEND_URL = `https://cjsback.herokuapp.com/`
@@ -109,7 +94,7 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){ 
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue){   
         const params = new URLSearchParams({
           input: inputValue,
           in_lang: inputLanguageValue,
@@ -138,9 +123,9 @@ export default function App() {
             setLanguageDetected("")
           }
         }
-        
         setErrors(translation["error"])
         setOutput(translation["response"])
+        
     }
 
     /**
@@ -161,7 +146,7 @@ export default function App() {
     // generates random GUID to use a session id
     function uuidv4() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
       });
     }
@@ -172,21 +157,37 @@ export default function App() {
     } 
 
     const handleOutputLanguageChange = (event, value) => {
-        postRequest(input, inputLanguage, value)
+      postRequest(value, inputLanguage, outputLanguage)
         setOutputLanguage(value)
         querySearch(input, value)
-    } 
+    }  
+    
+    function allowTabs() {
+      const textbox = document.getElementById("input-text-area")
+      textbox.onkeydown = function(key) {
+        if (key.code === "Tab") {
+          const val = this.value
+          const start = this.selectionStart
+          const end = this.selectionEnd
+          this.value = val.substring(0, start) + '\t' + val.substring(end)
+          setInput(val.substring(0, start) + '\t' + val.substring(end))
+          this.selectionStart = this.selectionEnd = start + 1
+          return false
+        }   
+      }
+    }
 
     const handleInputChange = (event) => {
         allowTabs(); // TODO: move this to useEffect
-        const value = event.target.value;
-        setInput(value);
+        const textbox = document.getElementById("input-text-area")
+        const value = textbox.value
+        setInput(value)
 
         clearTimeout(timer)
         setTimer(setTimeout(() => {
             postRequest(value, inputLanguage, outputLanguage)
             querySearch(value, outputLanguage)
-        }, 500))
+        }, 700))
       }
     
     if (loading) {
