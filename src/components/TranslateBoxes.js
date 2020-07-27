@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box';
 
 export default function TranslateBoxes({input, handleInputChange, output, errors, classes}){
     function addErrorsToOutput(output, errors){
-        if (Object.entries(errors).length !== 0){
+        if (errors && Object.entries(errors).length !== 0){
             let finalOutput = output
 
             // go through output text and find any strings with pattern $$E_$$
@@ -57,7 +57,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                             style: {fontFamily: "monospace"},
                             disableUnderline: true
                         }}
-                        value={output && errors && addErrorsToOutput(output, errors)}
+                        value={output && addErrorsToOutput(output, errors)}
                         disabled
                         />
                     </Box>
