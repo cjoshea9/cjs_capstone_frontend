@@ -18,8 +18,8 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
     function createOutputTypography(output, errors){
         if (!(errors && output)){
             return [
-                <Typography key={0} className={classes.outText}>
-                    Translation
+                <Typography key={0} className={classes.outTextTranslation}>
+                    <p>Translation</p>
                 </Typography>  
             ]
         }

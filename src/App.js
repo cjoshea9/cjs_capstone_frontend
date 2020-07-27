@@ -50,7 +50,13 @@ const useStyles = makeStyles(theme => ({
   outText: {
     whiteSpace: 'pre-wrap',
     display: 'inline',
-    fontFamily: "monospace"
+    fontFamily: "monospace",
+    fontSize: 18
+  },
+  outTextTranslation: {
+    whiteSpace: 'pre-wrap',
+    display: 'inline',
+    fontFamily: "Roboto"
   },
   title: {
     flexGrow: 1,
@@ -64,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function App() {
   // TODO change back to not dev
-  const BACKEND_URL = `https://cjsback.herokuapp.com/`
+  const BACKEND_URL = `https://cjsbackdev.herokuapp.com/`
   const classes = useStyles();
 
     // set state
