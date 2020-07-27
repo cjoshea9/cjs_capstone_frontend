@@ -41,6 +41,17 @@ const useStyles = makeStyles(theme => ({
     height: '80vh',
     justifyContent:"center",
   }, 
+  outErrorText: {
+    whiteSpace: 'pre-wrap',
+    display: 'inline',
+    fontFamily: "monospace",
+    color: '#FF3434'
+  },
+  outText: {
+    whiteSpace: 'pre-wrap',
+    display: 'inline',
+    fontFamily: "monospace"
+  },
   title: {
     flexGrow: 1,
   },
