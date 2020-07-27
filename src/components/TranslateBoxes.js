@@ -57,7 +57,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                             style: {fontFamily: "monospace"},
                             disableUnderline: true
                         }}
-                        value={output && addErrorsToOutput(output, errors)}
+                        value={errors && output && addErrorsToOutput(output, errors)}
                         disabled
                         />
                     </Box>
