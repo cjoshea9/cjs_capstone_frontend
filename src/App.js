@@ -54,6 +54,11 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+  },
+  tab: {
+    fontSize: 11,
+    minWidth: 130,
+    width: 130
   }
 }));
 
@@ -74,7 +79,7 @@ function allowTabs() {
 
 export default function App() {
   // TODO change back to not dev
-  const BACKEND_URL = `https://cjsbackdev.herokuapp.com/`
+  const BACKEND_URL = `https://cjsback.herokuapp.com/`
   const classes = useStyles();
 
     // set state
@@ -93,6 +98,10 @@ export default function App() {
         const data = await res.json();
         setSupportedLanguages(data["supported_languages"]);
         setLoading(false);
+        if (sessionStorage.getItem('id') == null) {
+          sessionStorage.setItem('id', uuidv4());
+        }
+        
     }
 
     useEffect(() => {
@@ -111,11 +120,12 @@ export default function App() {
 
     }, [])
 
-    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){
+    async function postRequest(inputValue, inputLanguageValue, outputLanguageValue ){ 
         const params = new URLSearchParams({
           input: inputValue,
           in_lang: inputLanguageValue,
-          out_lang: outputLanguageValue
+          out_lang: outputLanguageValue,
+          id: sessionStorage.getItem('id')
         })
 
         const requestOptions = {
@@ -158,6 +168,14 @@ export default function App() {
         buttons[0].click();
       }
     }
+    
+    // generates random GUID to use a session id
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
 
     const handleInputLanguageChange = (event, value) => {
       setInputLanguage(value)  
@@ -198,7 +216,7 @@ export default function App() {
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
-            <Container maxWidth="md">
+            <Container maxWidth="lg">
                     { Object.keys(supportedLanguages).length > 0 &&
                       <LanguageBar 
                         supportedLanguages = {supportedLanguages}

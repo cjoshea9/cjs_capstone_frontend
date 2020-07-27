@@ -74,7 +74,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                         value={input}
                         onChange={handleInputChange}
                         InputProps={{
-                            style: {fontFamily: "monospace"},
+                            style: {fontFamily: "monospace", fontSize: 18},
                             disableUnderline: true
                         }}
                         />
