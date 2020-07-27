@@ -16,49 +16,56 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
      * @param {response errors from backend} errors 
      */
     function createOutputTypography(output, errors){
-        const regexp = /\$\$E.\$\$/g
-        const matches = [...output.matchAll(regexp)];
-
-        if (matches.length > 0 && errors && Object.entries(errors).length !== 0){
-            console.log(matches)
-            let prev = 0;
-            let finalOutput = []
-            for (const match of matches){
-                // Add text before error
-                let beforeText = output.substring(prev, match["index"])
-                finalOutput.push(
-                    <Typography className={classes.outText} key={prev}>
-                        {beforeText}
-                    </Typography>
-                )
-
-                // Add error text
-                let errorKey = match[0].substring(2).slice(0,-2)
-                let errorMessage = errors[errorKey]["errorMessage"]
-                finalOutput.push(
-                    <Tooltip key={prev+1} title={errorMessage} arrow>
-                        <Typography className={classes.outErrorText}>
-                            <Link color="inherit">{"<"}err{">"}</Link>
-                        </Typography>
-                    </Tooltip>
-                )
-                prev = match["index"] + (errorKey.length) + 4;
-            }
-            let afterText = output.substring(prev)
-            finalOutput.push(
-                <Typography className={classes.outText} key={prev}>
-                    {afterText}
-                </Typography>
-            )
-            return finalOutput
+        if (!(errors && output)){
+            return [
+                <Typography key={0} className={classes.outText}>
+                    Translation
+                </Typography>  
+            ]
         }
 
-        // if no errors, just return output as string
-        return [
-            <Typography key={0} className={classes.outText}>
-                {output}
+        const regexp = /\$\$E\d+\$\$/g
+        const matches = [...output.matchAll(regexp)];
+
+        if (matches.length<=0 || !errors || Object.entries(errors).length == 0){
+            return [
+                <Typography key={0} className={classes.outText}>
+                    {output}
+                </Typography>
+            ]
+        }
+
+        let prev = 0;
+        let finalOutput = []
+        for (const match of matches){
+            // Add text before error
+            let beforeText = output.substring(prev, match["index"])
+            finalOutput.push(
+                <Typography className={classes.outText} key={prev}>
+                    {beforeText}
+                </Typography>
+            )
+
+            // Add error text
+            let errorKey = match[0].substring(2).slice(0,-2)
+            let errorMessage = errors[errorKey]["errorMessage"]
+            finalOutput.push(
+                <Tooltip key={prev+1} title={errorMessage} arrow>
+                    <Typography className={classes.outErrorText}>
+                        <Link color="inherit">{"<"}err{">"}</Link>
+                    </Typography>
+                </Tooltip>
+            )
+            prev = match["index"] + (errorKey.length) + 4;
+        }
+        let afterText = output.substring(prev)
+        finalOutput.push(
+            <Typography className={classes.outText} key={prev}>
+                {afterText}
             </Typography>
-        ]
+        )
+        return finalOutput
+        
     }
 
     return(
@@ -82,7 +89,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                 </Grid>
                 <Grid item xs={6}>
                     <Box className = {classes.box} bgcolor="grey.200">
-                        {errors && output && createOutputTypography(output, errors)}
+                        {createOutputTypography(output, errors)}
                     </Box>
                 </Grid>
             </Grid>
