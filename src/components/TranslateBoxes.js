@@ -8,6 +8,13 @@ import { Typography, Tooltip, Link } from '@material-ui/core';
 
 export default function TranslateBoxes({input, handleInputChange, output, errors, classes}){
 
+    /**
+     * Function takes output and errors and returns a list of typography and tooltip
+     * elements to be displayed in the output area. Errors are found in the output and replaced
+     * with "<err>" as well as a tooltip explaining the error.
+     * @param {response translation from backend} output 
+     * @param {response errors from backend} errors 
+     */
     function createOutputTypography(output, errors){
         const regexp = /\$\$E.\$\$/g
         const matches = [...output.matchAll(regexp)];
@@ -19,21 +26,39 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
             for (const match of matches){
                 // Add text before error
                 let beforeText = output.substring(prev, match["index"])
-                finalOutput.push(<Typography className={classes.outText} key={prev}>{beforeText}</Typography>)
+                finalOutput.push(
+                    <Typography className={classes.outText} key={prev}>
+                        {beforeText}
+                    </Typography>
+                )
 
                 // Add error text
                 let errorKey = match[0].substring(2).slice(0,-2)
                 let errorMessage = errors[errorKey]["errorMessage"]
-                finalOutput.push(<Tooltip key={prev+1} title={errorMessage} arrow><Typography className={classes.outErrorText}><Link color="inherit">{"<"}err{">"}</Link></Typography></Tooltip>)
+                finalOutput.push(
+                    <Tooltip key={prev+1} title={errorMessage} arrow>
+                        <Typography className={classes.outErrorText}>
+                            <Link color="inherit">{"<"}err{">"}</Link>
+                        </Typography>
+                    </Tooltip>
+                )
                 prev = match["index"] + (errorKey.length) + 4;
             }
             let afterText = output.substring(prev)
-            finalOutput.push(<Typography className={classes.outText} key={prev}>{afterText}</Typography>)
+            finalOutput.push(
+                <Typography className={classes.outText} key={prev}>
+                    {afterText}
+                </Typography>
+            )
             return finalOutput
         }
 
         // if no errors, just return output as string
-        return [<Typography key={0} className={classes.outText}>{output}</Typography>]
+        return [
+            <Typography key={0} className={classes.outText}>
+                {output}
+            </Typography>
+        ]
     }
 
     return(
