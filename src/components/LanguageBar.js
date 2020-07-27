@@ -47,7 +47,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       scrollButtons="auto"
                     >
                         {inputLangCodes.map( code => (
-                            <Tab key={code} value={code} label={getLabel(code)} />
+                            <Tab className={classes.tab} key={code} value={code} label={getLabel(code)} />
                         ))}
                     </Tabs>
                 </Grid>
@@ -61,7 +61,7 @@ export default function LanguageBar({supportedLanguages, inputLanguage, outputLa
                       scrollButtons="auto"
                     >
                         {outputLangCodes.map( code => (
-                            <Tab key={code} value={code} label={getLabel(code)} />
+                            <Tab className={classes.tab} key={code} value={code} label={getLabel(code)} />
                         ))}
                     </Tabs>
                 </Grid>

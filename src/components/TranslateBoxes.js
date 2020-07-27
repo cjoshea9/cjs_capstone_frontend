@@ -5,7 +5,27 @@ import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 
 
-export default function TranslateBoxes({input, handleInputChange, output, classes}){
+export default function TranslateBoxes({input, handleInputChange, output, errors, classes}){
+    function addErrorsToOutput(output, errors){
+        if (errors && Object.entries(errors).length !== 0){
+            let finalOutput = output
+
+            // go through output text and find any strings with pattern $$E_$$
+            const regexp = /\$\$E.\$\$/g
+            const matches = [...output.matchAll(regexp)];
+
+            for (const match of matches){
+                const errorKey = match[0].substring(2).slice(0,-2)
+                const errorMessage = errors[errorKey]["errorMessage"]
+                finalOutput = finalOutput.replace(match, errorMessage)
+            }
+            return finalOutput
+
+        } else {
+            return output
+        }
+    }
+
     return(
         <Paper className={classes.paper}>
             <Grid container className={classes.basicGrid} spacing={0}>
@@ -19,7 +39,7 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                         value={input}
                         onChange={handleInputChange}
                         InputProps={{
-                            style: {fontFamily: "monospace"},
+                            style: {fontFamily: "monospace", fontSize: 18},
                             disableUnderline: true
                         }}
                         />
@@ -32,12 +52,11 @@ export default function TranslateBoxes({input, handleInputChange, output, classe
                         label="Translation"
                         multiline
                         fullWidth
-                        // TODO: create more contrast in output text font color
                         InputProps={{
-                            style: {fontFamily: "monospace"},
+                            style: {fontFamily: "monospace", color: "black", fontSize: 18},
                             disableUnderline: true
                         }}
-                        value={output}
+                        value={errors && output && addErrorsToOutput(output, errors)}
                         disabled
                         />
                     </Box>

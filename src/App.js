@@ -43,6 +43,11 @@ const useStyles = makeStyles(theme => ({
   }, 
   title: {
     flexGrow: 1,
+  },
+  tab: {
+    fontSize: 11,
+    minWidth: 130,
+    width: 130
   }
 }));
 
@@ -55,6 +60,7 @@ export default function App() {
     const [timer, setTimer] = useState(null);
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
+    const [errors, setErrors] = useState({})
     const [inputLanguage, setInputLanguage] = useState("auto");
     const [outputLanguage, setOutputLanguage] = useState("py");
     const [supportedLanguages, setSupportedLanguages] = useState([]);
@@ -117,6 +123,7 @@ export default function App() {
             setLanguageDetected("")
           }
         }
+        setErrors(translation["error"])
         setOutput(translation["response"])
         
     }
@@ -199,7 +206,7 @@ export default function App() {
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
-            <Container maxWidth="md">
+            <Container maxWidth="lg">
                     { Object.keys(supportedLanguages).length > 0 &&
                       <LanguageBar 
                         supportedLanguages = {supportedLanguages}
@@ -214,6 +221,7 @@ export default function App() {
                       input= {input}
                       handleInputChange={handleInputChange}
                       output={output}
+                      errors={errors}
                       classes={classes}
                     />
             </Container>
