@@ -89,7 +89,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                 </Grid>
                 <Grid item xs={6}>
                     <Box className = {classes.box} bgcolor="grey.200">
-                        {createOutputTypography(output, errors)}
+                        <p>{createOutputTypography(output, errors)}</p>
                     </Box>
                 </Grid>
             </Grid>
