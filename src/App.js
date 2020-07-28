@@ -76,8 +76,7 @@ export default function App() {
     // set state
     const [timer, setTimer] = useState(null);
     const [input, setInput] = useState("");
-    const [output, setOutput] = useState("");
-    const [errors, setErrors] = useState({})
+    const [response, setResponse] = useState({})
     const [inputLanguage, setInputLanguage] = useState("auto");
     const [outputLanguage, setOutputLanguage] = useState("py");
     const [supportedLanguages, setSupportedLanguages] = useState([]);
@@ -140,9 +139,7 @@ export default function App() {
             setLanguageDetected("")
           }
         }
-        setErrors(translation["error"])
-        setOutput(translation["response"])
-        
+        setResponse(translation);
     }
 
     /**
@@ -237,8 +234,8 @@ export default function App() {
                     <TranslateBoxes
                       input= {input}
                       handleInputChange={handleInputChange}
-                      output={output}
-                      errors={errors}
+                      output={response["response"]}
+                      errors={response["error"]}
                       classes={classes}
                     />
             </Container>
