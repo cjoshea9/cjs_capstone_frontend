@@ -18,8 +18,8 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
     function createOutputTypography(output, errors){
         if (!(errors && output)){
             return [
-                <Typography key={0} className={classes.outText}>
-                    Translation
+                <Typography key={0} className={classes.outTextTranslation}>
+                    <p>Translation</p>
                 </Typography>  
             ]
         }
@@ -89,7 +89,7 @@ export default function TranslateBoxes({input, handleInputChange, output, errors
                 </Grid>
                 <Grid item xs={6}>
                     <Box className = {classes.box} bgcolor="grey.200">
-                        {createOutputTypography(output, errors)}
+                        <p>{createOutputTypography(output, errors)}</p>
                     </Box>
                 </Grid>
             </Grid>
