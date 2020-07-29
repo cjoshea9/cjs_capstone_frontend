@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import LanguageBar from './components/LanguageBar';
 import TranslateBoxes from './components/TranslateBoxes';
 import Navbar from './components/Navbar';
+import Copyright from './components/Copyright';
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 
@@ -241,6 +242,7 @@ export default function App() {
             </Container>
           </div>
           <div className="gcse-search"></div>
+          <Copyright/>
         </main>
       </React.Fragment>
     );
