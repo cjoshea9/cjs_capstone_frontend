@@ -12,7 +12,7 @@ export default function Navbar({classes}){
                     CodeTranslate
                 </Typography>
                 <Button 
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSen6Nw4-2D1LdhCMgSlVB1rAjMPlThTlSQ4mAqeRYHm-XStMw/viewform?usp=sf_link" 
+                  href="https://forms.gle/vq8c9qMXqgCConz98" 
                   target="_blank"
                   color="inherit"
                   >
