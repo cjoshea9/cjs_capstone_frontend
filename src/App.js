@@ -128,18 +128,29 @@ export default function App() {
         };
         const response = await fetch(BACKEND_URL, requestOptions);    
         const translation = await response.json();
-        // change in_lang only if it is defined
-        if (translation['response_in_lang'] !== "undefined"){
-          if (inputLanguageValue === "auto") {
-            setInputLanguage("auto")
-            setLanguageDetected(translation['response_in_lang'])
+
+        if ("message" in translation) {
+          // Internal server error from the backend
+          const output = {"response": "$$E0$$", "response_in_lang": inputLanguageValue}
+          const error = {"E0": {"errorMessage": "An unknown error has occured. Please provide feedback at the link at the top.", 
+                  "errorType": "unknown"}}
+          output["error"] = error
+          setResponse(output)
+        } 
+        else {
+          // change in_lang only if it is defined
+          if (translation['response_in_lang'] !== "undefined"){
+            if (inputLanguageValue === "auto") {
+              setInputLanguage("auto")
+              setLanguageDetected(translation['response_in_lang'])
+            }
+            else {
+              setInputLanguage(translation['response_in_lang'])
+              setLanguageDetected("")
+            }
           }
-          else {
-            setInputLanguage(translation['response_in_lang'])
-            setLanguageDetected("")
-          }
+          setResponse(translation);
         }
-        setResponse(translation);
     }
 
     /**
