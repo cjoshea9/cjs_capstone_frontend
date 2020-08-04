@@ -7,7 +7,6 @@ export default function Footer() {
             <Link color="inherit" href="https://github.com/jackdavidweber/cjs_capstone" target="_blank">
                 Source Code
             </Link>{' '}
-            | Queries are logged to improve results.
         </Typography>
     );
   }
