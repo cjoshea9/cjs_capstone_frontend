@@ -1,5 +1,6 @@
 {
-  "name": "cjs_capstone_frontend",
+  "name": "demo",
+  "homepage": "http://codetranslate.com/demo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
